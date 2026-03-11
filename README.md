@@ -33,7 +33,7 @@ Output ISO is written to `out/`.
 The ISO boots via UEFI (the DGX Spark uses UEFI, not device trees). Three boot options:
 
 1. **Arch Linux DGX Spark** — standard graphical console boot
-2. **Serial console** — boots with `console=ttyAMA0,115200n8` for headless/serial access
+2. **Serial console** — boots with `console=ttyS0,921600` for headless/serial access
 3. **Copy to RAM** — copies the squashfs to RAM before booting (frees the USB drive)
 
 ## Project Structure
