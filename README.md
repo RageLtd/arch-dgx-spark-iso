@@ -28,6 +28,14 @@ KERNEL_DIR=/path/to/linux-dgx-spark ./build.sh
 
 Output ISO is written to `out/`.
 
+Write the ISO directly to a USB drive:
+
+```bash
+sudo dd if=out/archlinux-dgx-spark-*.iso of=/dev/sdX bs=4M status=progress
+```
+
+> **Note:** Ventoy is not supported. The archiso boot process uses UUID-based device discovery which is incompatible with Ventoy's loopback mounting.
+
 ## Boot
 
 The ISO boots via UEFI (the DGX Spark uses UEFI, not device trees). Three boot options:
