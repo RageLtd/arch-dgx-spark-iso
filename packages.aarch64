@@ -41,6 +41,7 @@ nano
 vim
 
 # Core utilities
+pv
 sudo
 less
 man-db
