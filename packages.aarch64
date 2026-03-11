@@ -1,0 +1,68 @@
+# Base system
+base
+linux-dgx-spark
+linux-firmware
+
+# Archiso requirements
+mkinitcpio
+mkinitcpio-archiso
+
+# Boot
+limine
+efibootmgr
+dosfstools
+mtools
+systemd-ukify
+
+# Btrfs snapshots
+snapper
+
+# Arch installer tools
+arch-install-scripts
+archinstall
+pacman-contrib
+
+# Filesystem
+btrfs-progs
+e2fsprogs
+xfsprogs
+parted
+gptfdisk
+
+# Networking
+networkmanager
+openssh
+iwd
+dhcpcd
+nfs-utils
+
+# Editors
+nano
+vim
+
+# Core utilities
+sudo
+less
+man-db
+man-pages
+which
+tmux
+htop
+usbutils
+pciutils
+
+# Compression
+tar
+xz
+zstd
+gzip
+unzip
+
+# Development (for DKMS modules if needed)
+base-devel
+
+# Serial console (DGX Spark may use serial)
+screen
+
+# Secure shell for remote install
+rsync

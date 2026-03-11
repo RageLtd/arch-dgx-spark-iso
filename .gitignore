@@ -1,0 +1,7 @@
+# Build artifacts
+out/
+pkgs/
+build.log
+
+# macOS
+.DS_Store

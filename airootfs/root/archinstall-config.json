@@ -1,0 +1,25 @@
+{
+  "kernels": ["linux-dgx-spark"],
+  "bootloader_config": {
+    "bootloader": "Systemd-boot",
+    "uki": false,
+    "removable": false
+  },
+  "packages": ["git", "base-devel", "limine", "efibootmgr"],
+  "custom_commands": [
+    "bootctl remove",
+    "limine-install",
+    "useradd -m -G wheel builder",
+    "echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder",
+    "su - builder -c 'git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin && cd /tmp/yay-bin && makepkg -si --noconfirm && rm -rf /tmp/yay-bin'",
+    "su - builder -c 'yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync'",
+    "rm -f /etc/sudoers.d/builder"
+  ],
+  "ntp": true,
+  "timezone": "UTC",
+  "locale_config": {
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US"
+  }
+}
