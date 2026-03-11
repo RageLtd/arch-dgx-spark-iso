@@ -7,6 +7,10 @@ linux-firmware
 mkinitcpio
 mkinitcpio-archiso
 
+# Pacman keyring and TLS (needed for live system package installs)
+archlinuxarm-keyring
+ca-certificates
+
 # Boot
 limine
 efibootmgr

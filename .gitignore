@@ -2,6 +2,7 @@
 out/
 pkgs/
 build.log
+airootfs/var/lib/dgx-spark-repo/
 
 # macOS
 .DS_Store

@@ -123,12 +123,22 @@ build_iso() {
     bash -c '
       set -euo pipefail
 
+      # Bundle kernel packages into the live system so archinstall can find them.
+      # airootfs/etc/pacman.conf points to /var/lib/dgx-spark-repo.
+      LIVE_REPO="/build/airootfs/var/lib/dgx-spark-repo"
+      mkdir -p "$LIVE_REPO"
+      cp /build/pkgs/linux-dgx-spark-*.pkg.tar.* "$LIVE_REPO/"
+      repo-add "$LIVE_REPO/dgx-spark.db.tar.gz" "$LIVE_REPO"/linux-dgx-spark-*.pkg.tar.*
+
       # mkarchiso expects the profile dir as the last argument.
       # Work directory must be on a real filesystem (not overlayfs).
       WORK_DIR="/tmp/archiso-work"
       mkdir -p "$WORK_DIR"
 
       mkarchiso -v -w "$WORK_DIR" -o /out /build
+
+      # Clean up bundled packages from the source tree
+      rm -rf "$LIVE_REPO"
 
       echo "==> ISO built successfully!"
       ls -lh /out/*.iso

@@ -1,0 +1,12 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/modules/*/vmlinuz
+Target = usr/lib/initcpio/*
+
+[Action]
+Description = Updating Limine boot configuration...
+When = PostTransaction
+Exec = /usr/local/bin/limine-mkconfig
+NeedsTargets

@@ -18,4 +18,6 @@ file_permissions=(
   ["/etc/gshadow"]="0:0:400"
   ["/root"]="0:0:750"
   ["/root/post-install.sh"]="0:0:755"
+  ["/root/limine-hooks/install-limine.sh"]="0:0:755"
+  ["/root/limine-hooks/limine-mkconfig"]="0:0:755"
 )

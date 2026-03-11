@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# limine-mkconfig — Generate /boot/limine.conf from installed kernels
+# Lightweight replacement for limine-mkinitcpio-hook (avoids Gradle dependency)
+
+set -euo pipefail
+
+BOOT="/boot"
+CONF="${BOOT}/limine.conf"
+CMDLINE_EXTRA="console=ttyS0,921600 console=tty0 earlycon=uart,mmio32,0x16A00000 nouveau.modeset=0 sbsa_gwdt.action=1 pci=pcie_bus_safe"
+
+# Detect root partition and subvolume
+ROOT_DEV=$(findmnt -n -o SOURCE /)
+ROOT_UUID=$(blkid -s UUID -o value "$ROOT_DEV")
+ROOT_FSTYPE=$(findmnt -n -o FSTYPE /)
+ROOTFLAGS=""
+if [[ "$ROOT_FSTYPE" == "btrfs" ]]; then
+  SUBVOL=$(findmnt -n -o OPTIONS / | grep -oP 'subvol=\K[^,]+')
+  [[ -n "$SUBVOL" ]] && ROOTFLAGS="rootflags=subvol=${SUBVOL} "
+fi
+
+# Find installed kernels
+cat > "$CONF" << EOF
+timeout: 5
+EOF
+
+for vmlinuz in "${BOOT}"/vmlinuz-*; do
+  [[ -f "$vmlinuz" ]] || continue
+  kname="${vmlinuz##*/vmlinuz-}"
+  initramfs="${BOOT}/initramfs-${kname}.img"
+  fallback="${BOOT}/initramfs-${kname}-fallback.img"
+
+  cat >> "$CONF" << EOF
+
+/${kname}
+    protocol: linux
+    kernel_path: boot():/${vmlinuz##*/}
+    kernel_cmdline: root=UUID=${ROOT_UUID} rw ${ROOTFLAGS}${CMDLINE_EXTRA}
+    module_path: boot():/${initramfs##*/}
+EOF
+
+  if [[ -f "$fallback" ]]; then
+    cat >> "$CONF" << EOF
+
+/${kname} (fallback)
+    protocol: linux
+    kernel_path: boot():/${vmlinuz##*/}
+    kernel_cmdline: root=UUID=${ROOT_UUID} rw ${ROOTFLAGS}${CMDLINE_EXTRA}
+    module_path: boot():/${fallback##*/}
+EOF
+  fi
+done
+
+echo "Limine config written to ${CONF}"

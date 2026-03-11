@@ -1,0 +1,13 @@
+[Unit]
+Description=Initialize pacman keyring
+Before=getty@tty1.service serial-getty@ttyS0.service
+After=systemd-random-seed.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/pacman-key --init
+ExecStart=/usr/bin/pacman-key --populate archlinuxarm
+
+[Install]
+WantedBy=multi-user.target
