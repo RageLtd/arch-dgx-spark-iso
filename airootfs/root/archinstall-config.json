@@ -5,7 +5,16 @@
     "uki": false,
     "removable": false
   },
-  "packages": ["git", "base-devel", "limine", "efibootmgr"],
+  "packages": [
+    "git",
+    "base-devel",
+    "limine",
+    "efibootmgr",
+    "linux-dgx-spark-headers",
+    "nvidia-open-dkms",
+    "nvidia-utils",
+    "nvidia-container-toolkit"
+  ],
   "custom_commands": [
     "bootctl remove",
     "bash /root/limine-hooks/install-limine.sh"

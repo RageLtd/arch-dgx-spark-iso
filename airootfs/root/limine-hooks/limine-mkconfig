@@ -6,7 +6,11 @@ set -euo pipefail
 
 BOOT="/boot"
 CONF="${BOOT}/limine.conf"
-CMDLINE_EXTRA="console=ttyS0,921600 console=tty0 earlycon=uart,mmio32,0x16A00000 nouveau.modeset=0 sbsa_gwdt.action=1 pci=pcie_bus_safe"
+# cppc_cpufreq.auto_sel_mode=1: without autonomous CPPC the GB10 memory
+# fabric never enters autonomous performance management (~3x lower
+# single-thread memory bandwidth). Stock DGX OS enables it; the NVIDIA
+# kernel ships the driver support but defaults it off.
+CMDLINE_EXTRA="console=ttyS0,921600 console=tty0 earlycon=uart,mmio32,0x16A00000 nouveau.modeset=0 sbsa_gwdt.action=1 pci=pcie_bus_safe cppc_cpufreq.auto_sel_mode=1"
 
 # Detect root partition and subvolume
 ROOT_DEV=$(findmnt -n -o SOURCE /)

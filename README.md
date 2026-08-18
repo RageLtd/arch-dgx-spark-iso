@@ -75,7 +75,12 @@ The config pre-selects `linux-dgx-spark` kernel, Limine bootloader, and automati
 
 1. Partition the disk (`fdisk` or `parted`)
 2. Format and mount partitions
-3. `pacstrap /mnt base linux-dgx-spark linux-firmware limine efibootmgr`
+3. `pacstrap /mnt base linux-dgx-spark linux-dgx-spark-headers linux-firmware limine efibootmgr nvidia-open-dkms nvidia-utils`
+   (add `linux-dgx-spark-64k` + `linux-dgx-spark-64k-headers` too if they're in
+   the repo — the 64K page-size variant installs alongside the 4K kernel for
+   A/B testing from the boot menu. DKMS builds the NVIDIA modules for every
+   installed kernel that has headers. Add `nvidia-container-toolkit` for GPU
+   access from Docker/Podman.)
 4. `genfstab -U /mnt >> /mnt/etc/fstab`
 5. `arch-chroot /mnt`
 6. Configure locale, timezone, hostname
